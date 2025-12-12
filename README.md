@@ -2,3 +2,7 @@
 
 # robot_constraint_editor
 A graphical editor to create and manage configuration files for the [robot_constraint_manager](https://github.com/Adorno-Lab/robot_constraint_manager)
+
+TODO
+
+- [] Provide instructions to compile.
