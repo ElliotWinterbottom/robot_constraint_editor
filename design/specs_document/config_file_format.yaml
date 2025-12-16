@@ -1,0 +1,9 @@
+vfi_file_version: 2
+zero_index: false
+vfi_array:
+    -
+        vfi_type: "ENVIRONMENT_TO_ROBOT"
+        tag: "C1"
+    -
+        vfi_type: "ROBOT_TO_ROBOT"
+        tag: "C2"        
