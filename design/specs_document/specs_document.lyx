@@ -194,24 +194,7 @@ vfi_array,
 The VFIs can be of two types "ENVIRONMENT_TO_ROBOT" or "ROBOT_TO_ROBOT",
  which each type contain specific parameters.
  For instance,
- the "ROBOT_TO_ROBOT" type adds three additional parameters and requires different types to set the object names used in CoppeliaSim.
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-Both 
-\emph on
-cs_entity_one
-\emph default
- and
-\emph on
- cs_entity_two
-\emph default
- are described as a list of strings.
-\end_layout
-
-\end_inset
-
+ the "ROBOT_TO_ROBOT" type adds three additional parameters.
  Tables 
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -234,9 +217,21 @@ nolink "false"
 
 \end_inset
 
- show the parameters require in the 
+ show the parameters required in the 
 \emph on
 vfi_array.
+\end_layout
+
+\begin_layout Standard
+Some type of primitives could require more than one CoppeliaSim object to be described.
+ For instance,
+ the "LINESEGMENT" require three objects to describe the line,
+ and the two points on the line that compose the line segment.
+ The description must be written in a specific order:
+ first,
+ the object that defines the line,
+ and then the objects representing the two points on the line.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -251,7 +246,7 @@ status open
 \begin_inset CommandInset include
 LatexCommand lstinputlisting
 filename "config_file_format.yaml"
-lstparams "breaklines=false,captionpos=b,frame=tb,keywordstyle={\\color{blue}},alsoletter={*()\"'0123456789.},alsoother={\\{\\=\\}},backgroundcolor={\\color{lightgray3}},basicstyle={\\footnotesize\\ttfamily},breaklines=true,commentstyle={\\itshape\\color{lightgray}},fillcolor={\\color{lightgray3}},framexleftmargin=1em,framextopmargin=1em,keywordstyle={\\color{magenta}\\bfseries},language=Python,literate={{=}{{{\\color{blue}=}}}1},morestring={[b]\"},stringstyle={\\color{blue}\\ttfamily},morecomment={[n][\\keywordstyle]{{}{}}},morekeywords={vfi_type,cs_entity_environment, cs_entity_robot, entity_environment_primitive_type, entity_robot_primitive_type, robot_index, joint_index, safe_distance, direction},otherkeywords={cs_entity_one, cs_entity_two, entity_one_primitive_type, entity_two_primitive_type, robot_index_one, robot_index_two, joint_index_one, joint_index_two},prebreak={\\textbackslash},sensitive=true,stepnumber=1,tabsize=4,upquote=true"
+lstparams "breaklines=false,captionpos=b,frame=tb,keywordstyle={\\color{blue}},alsoletter={*()\"'0123456789.},alsoother={\\{\\=\\}},backgroundcolor={\\color{lightgray3}},basicstyle={\\footnotesize\\ttfamily},breaklines=true,commentstyle={\\itshape\\color{lightgray}},fillcolor={\\color{lightgray3}},framexleftmargin=1em,framextopmargin=1em,keywordstyle={\\color{magenta}\\bfseries},language=Python,literate={{=}{{{\\color{blue}=}}}1},morestring={[b]\"},stringstyle={\\color{blue}\\ttfamily},morecomment={[n][\\keywordstyle]{{}{}}},morekeywords={vfi_type,vfi_gain, tag,cs_entity_environment, cs_entity_robot, entity_environment_primitive_type, entity_robot_primitive_type, robot_index, joint_index, safe_distance, direction},otherkeywords={cs_entity_one, cs_entity_two, entity_one_primitive_type, entity_two_primitive_type, robot_index_one, robot_index_two, joint_index_one, joint_index_two},prebreak={\\textbackslash},sensitive=true,stepnumber=1,tabsize=4,upquote=true"
 literal "false"
 
 \end_inset
@@ -415,6 +410,7 @@ cs_entity_environment
 \begin_inset Text
 
 \begin_layout Plain Layout
+[
 \begin_inset Quotes eld
 \end_inset
 
@@ -422,7 +418,7 @@ coppeliasim_object_name
 \begin_inset Quotes erd
 \end_inset
 
-
+]
 \end_layout
 
 \end_inset
@@ -431,7 +427,7 @@ coppeliasim_object_name
 \begin_inset Text
 
 \begin_layout Plain Layout
-string
+string list
 \end_layout
 
 \end_inset
@@ -460,6 +456,7 @@ cs_entity_robot
 \begin_inset Text
 
 \begin_layout Plain Layout
+[
 \begin_inset Quotes eld
 \end_inset
 
@@ -467,7 +464,7 @@ coppeliasm_object_name_attached_to_the_robot
 \begin_inset Quotes erd
 \end_inset
 
-
+]
 \end_layout
 
 \end_inset
@@ -476,7 +473,7 @@ coppeliasm_object_name_attached_to_the_robot
 \begin_inset Text
 
 \begin_layout Plain Layout
-string
+string list
 \end_layout
 
 \end_inset

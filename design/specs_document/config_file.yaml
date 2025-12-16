@@ -3,8 +3,8 @@ zero_indexed: false
 vfi_array:
     -
         vfi_type: "ENVIRONMENT_TO_ROBOT"
-        cs_entity_environment: "Cylinder_1"
-        cs_entity_robot: "Sphere_1"
+        cs_entity_environment: ["Cylinder_1"]
+        cs_entity_robot: ["Sphere_1"]
         entity_environment_primitive_type: "LINE"
         entity_robot_primitive_type: "POINT"
         robot_index: 1
