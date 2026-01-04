@@ -22,12 +22,16 @@
 */
 
 #pragma once
+#include <memory>
 
 namespace DQ_robotics_extensions
 {
 
 class RobotConstraintEditor
 {
+private:
+    class Impl;
+    std::shared_ptr<Impl> impl_;
 public:
     RobotConstraintEditor();
 };

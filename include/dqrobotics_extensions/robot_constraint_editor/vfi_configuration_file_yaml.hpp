@@ -33,8 +33,8 @@ class VFIConfigurationFileYaml: public VFIConfigurationFile
 private:
     class Impl;
     std::shared_ptr<Impl> impl_;
-    void _extract_yaml_data();
     std::vector<RawData> raw_data_;
+    void _extract_yaml_data();
 public:
     ~VFIConfigurationFileYaml() = default;
     VFIConfigurationFileYaml(const std::string& config_file);
@@ -47,6 +47,9 @@ public:
 
     // Exclusive methods
     void show_raw_data(const std::vector<RawData>& raw_data);
+
+    //void create_yaml_file(const std::vector<RawData>& raw_data,
+    //                      const std::string& config_file_name);
 
 };
 }
