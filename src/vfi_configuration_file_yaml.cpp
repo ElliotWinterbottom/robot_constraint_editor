@@ -17,7 +17,12 @@ public:
     };
 
 
-
+    /**
+     * @brief get_vector_list returns a string vector containing the data from a given YAML node.
+     * @param node A YAML node
+     * @param key_name The key name to display an error message.
+     * @return The desired string vector.
+     */
     std::vector<std::string> get_vector_list(const YAML::Node& node, const std::string& key_name)
     {
         std::vector<std::string> entities;
@@ -29,6 +34,12 @@ public:
         return entities;
     }
 
+    /**
+     * @brief join_vector create a string from a string vector.
+     * @param vec The string vector
+     * @param delimiter A string to separate the elements of the vector
+     * @return The desired string
+     */
     std::string join_vector(const std::vector<std::string>& vec, const std::string& delimiter = ", ") {
         std::string result;
         for (size_t i = 0; i < vec.size(); ++i) {
@@ -40,6 +51,10 @@ public:
         return result;
     }
 
+    /**
+     * @brief log_complete_raw_data displays on the terminal the raw data vector.
+     * @param raw_data The raw data vector obtained from the YAML file.
+     */
     void log_complete_raw_data(const std::vector<DQ_robotics_extensions::VFIConfigurationFile::RawData>& raw_data) {
         std::cout << "╔══════════════════════════════════════════════════════╗" << std::endl;
         std::cout << "║       VFI Configuration File Parser - C++17         ║" << std::endl;
@@ -98,7 +113,6 @@ public:
                 std::cout << std::setw(35) << "  tag:" << robot_data.tag << std::endl;
             }
         }
-
         std::cout << "\n==========================================" << std::endl;
         std::cout << "END OF LOG" << std::endl;
         std::cout << "==========================================" << std::endl;
@@ -106,6 +120,11 @@ public:
 
 };
 
+/**
+ * @brief VFIConfigurationFileYaml::VFIConfigurationFileYaml ctor of the class.
+ * @param config_file The configuration YAML file. This path must contain the file and its format.
+ *                    Example: "/path_to_the_file/config_file.yaml"
+ */
 VFIConfigurationFileYaml::VFIConfigurationFileYaml(const std::string& config_file)
 {
     impl_ = std::make_shared<VFIConfigurationFileYaml::Impl>();
@@ -113,6 +132,9 @@ VFIConfigurationFileYaml::VFIConfigurationFileYaml(const std::string& config_fil
     _extract_yaml_data();
 }
 
+/**
+ * @brief VFIConfigurationFileYaml::_extract_yaml_data reads the YAML file and store the data on a RAW_DATA vector.
+ */
 void VFIConfigurationFileYaml::_extract_yaml_data()
 {
     try {
@@ -124,7 +146,6 @@ void VFIConfigurationFileYaml::_extract_yaml_data()
         for (const auto& parameter : vfi_array) {
             try {
                 std::string vfi_type = parameter["vfi_type"].as<std::string>();
-                //std::cout<<vfi_type<<std::endl;
 
                 if (vfi_type == "ENVIRONMENT_TO_ROBOT") {
                     ENVIRONMENT_TO_ROBOT_RAW_DATA env_data;
@@ -170,9 +191,6 @@ void VFIConfigurationFileYaml::_extract_yaml_data()
             std::cerr << "Error parsing VFI item: " << e.what() << std::endl;
             }
         }
-
-
-
     }
     catch(const YAML::BadFile& e)
     {
@@ -187,16 +205,20 @@ void VFIConfigurationFileYaml::_extract_yaml_data()
 
 }
 
-VFIConfigurationFileYaml::~VFIConfigurationFileYaml()
-{
 
-}
-
+/**
+ * @brief VFIConfigurationFileYaml::get_raw_data gets the raw data vector from a YAML file.
+ * @return A raw data vector.
+ */
 std::vector<VFIConfigurationFile::RawData> VFIConfigurationFileYaml::get_raw_data()
 {
     return raw_data_;
 }
 
+/**
+ * @brief VFIConfigurationFileYaml::show_raw_data displays on the terminal the raw data vector.
+ * @param raw_data The raw data vector obtained from the YAML file.
+ */
 void VFIConfigurationFileYaml::show_raw_data(const std::vector<RawData>& raw_data)
 {
     impl_->log_complete_raw_data(raw_data);

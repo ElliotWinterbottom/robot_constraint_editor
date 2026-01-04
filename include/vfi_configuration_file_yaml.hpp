@@ -13,7 +13,7 @@ private:
     void _extract_yaml_data();
     std::vector<RawData> raw_data_;
 public:
-    ~VFIConfigurationFileYaml();
+    ~VFIConfigurationFileYaml() = default;
 
     std::vector<RawData> get_raw_data() override;
     VFIConfigurationFileYaml(const std::string& config_file);
