@@ -23,3 +23,15 @@ macOS:
 brew update
 brew install yaml-cpp
 ```
+
+
+### Install (UNIX)
+
+```shell
+git clone https://github.com/Adorno-Lab/robot_constraint_editor
+cd robot_constraint_editor
+mkdir -p build && cd build
+cmake ..
+make
+sudo make install
+```
