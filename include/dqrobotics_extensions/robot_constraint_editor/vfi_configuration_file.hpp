@@ -89,6 +89,8 @@ public:
      * @return The desired data.
      */
     virtual bool get_zero_indexed_status() = 0;
+
+
 };
 
 

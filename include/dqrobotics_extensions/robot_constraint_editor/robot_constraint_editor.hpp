@@ -48,7 +48,8 @@ public:
                    const bool& zero_indexed);
 
 
-    void edit_data(const std::string& tag, const std::string& key, const int& value);
+    template<typename T>
+    void edit_data(const std::string& tag, const std::string& key, const T& value);
 
 
     std::vector<VFIConfigurationFile::RawData> get_raw_data();

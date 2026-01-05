@@ -1,7 +1,7 @@
 
 #include <dqrobotics_extensions/robot_constraint_editor/vfi_configuration_file_yaml.hpp>
 #include <dqrobotics_extensions/robot_constraint_editor/robot_constraint_editor.hpp>
-
+#include <dqrobotics_extensions/robot_constraint_editor/utils.hpp>
 using namespace DQ_robotics_extensions;
 
 
@@ -9,7 +9,7 @@ using namespace DQ_robotics_extensions;
 int main()
 {
     auto ri = VFIConfigurationFileYaml("config_file.yaml");
-    ri.show_raw_data(ri.get_raw_data(), ri.get_vfi_file_version(), ri.get_zero_indexed_status());
+    VFIConfigurationFileRawData::show_data(ri.get_raw_data(), ri.get_vfi_file_version(), ri.get_zero_indexed_status());
 
     //-- Edit the YAML file-----
 
@@ -35,9 +35,10 @@ int main()
     rce.add_data(data);
 
     //----Edit a constraint
-    rce.edit_data("C3", "robot_index_one", 11.0);
+    rce.edit_data("C3", "tag", std::string("C33"));
 
-   rce.save_data("config_file2.yaml", 2, false);
+
+    rce.save_data("config_file2.yaml", 2, false);
 
 
 

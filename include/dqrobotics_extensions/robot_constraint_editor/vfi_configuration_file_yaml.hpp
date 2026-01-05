@@ -42,15 +42,6 @@ public:
     int get_vfi_file_version() override;
     bool get_zero_indexed_status() override;
 
-
-    // Exclusive methods
-    static void show_raw_data(const std::vector<RawData>& raw_data,
-                              const int& vfi_file_version,
-                              const bool& zero_indexed);
-
-    //void create_yaml_file(const std::vector<RawData>& raw_data,
-    //                      const std::string& config_file_name);
-
 };
 }
 
