@@ -62,7 +62,7 @@ public:
         std::string tag;
     };
 
-    using RawData= std::variant<ENVIRONMENT_TO_ROBOT_RAW_DATA, ROBOT_TO_ROBOT_RAW_DATA>;
+    using RawData = std::variant<ENVIRONMENT_TO_ROBOT_RAW_DATA, ROBOT_TO_ROBOT_RAW_DATA>;
 
 protected:
     VFIConfigurationFile() = default;

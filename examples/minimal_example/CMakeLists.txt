@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
 find_package(Eigen3 REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 if(UNIX AND NOT APPLE)
     FIND_PACKAGE(Eigen3 REQUIRED)
@@ -40,13 +41,16 @@ add_library(vfi_config_yaml
            ../../src/dqrobotics_extensions/robot_constraint_editor/vfi_configuration_file_yaml.cpp
            ../../src/dqrobotics_extensions/robot_constraint_editor/robot_constraint_editor.cpp
 )
+target_link_libraries(vfi_config_yaml
+           yaml-cpp::yaml-cpp
+)
 
 add_executable(${PROJECT_NAME} main.cpp
            )
 
 target_link_libraries(${PROJECT_NAME}
            vfi_config_yaml
-           yaml-cpp
+           yaml-cpp::yaml-cpp
 )
 
 # COPY the Yaml config file to the build folder

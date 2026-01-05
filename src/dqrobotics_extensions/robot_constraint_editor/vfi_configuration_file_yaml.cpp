@@ -28,6 +28,117 @@
 
 namespace DQ_robotics_extensions
 {
+std::string bool2string(const bool& flag);
+std::string join_vector(const std::vector<std::string>& vec, const std::string& delimiter = ", ");
+void log_complete_raw_data(const std::vector<DQ_robotics_extensions::VFIConfigurationFile::RawData>& raw_data,
+                          const int& vfi_file_version,
+                          const bool& zero_indexed);
+
+
+/**
+ * @brief bool2string convert a boolean to string
+ * @param flag The boolean to convert
+ * @return "true" or "false" according to the flag.
+ */
+std::string bool2string(const bool& flag)
+{
+    return flag == true ? std::string("true") : std::string("false");
+}
+
+
+/**
+ * @brief join_vector create a string from a string vector.
+ * @param vec The string vector
+ * @param delimiter A string to separate the elements of the vector
+ * @return The desired string
+ */
+std::string join_vector(const std::vector<std::string>& vec, const std::string& delimiter) {
+    std::string result;
+    for (size_t i = 0; i < vec.size(); ++i) {
+        result += vec[i];
+        if (i < vec.size() - 1) {
+            result += delimiter;
+        }
+    }
+    return result;
+}
+
+
+/**
+ * @brief log_complete_raw_data displays on the terminal the raw data vector.
+ * @param raw_data The raw data vector obtained from the YAML file.
+ * @param vfi_file_version
+ * @param zero_indexed
+ */
+void log_complete_raw_data(const std::vector<DQ_robotics_extensions::VFIConfigurationFile::RawData>& raw_data,
+                           const int& vfi_file_version,
+                           const bool& zero_indexed)
+{
+    std::cout << "╔══════════════════════════════════════════════════════╗" << std::endl;
+    std::cout << "║       VFI Configuration File Parser - C++17         ║" << std::endl;
+    std::cout << "╚══════════════════════════════════════════════════════╝" << std::endl;
+    std::cout << "\n==========================================" << std::endl;
+    std::cout << "VFI_FILE_VERSION: " << vfi_file_version << std::endl;
+    std::cout << "Zero Indexed: " + bool2string(zero_indexed) << std::endl;
+    std::cout << "RAW DATA LOG (" << raw_data.size() << " items)" << std::endl;
+    std::cout << "==========================================" << std::endl;
+
+    for (size_t i = 0; i < raw_data.size(); ++i) {
+        std::cout << "\n\n[" << i + 1 << "/" << raw_data.size() << "] ";
+
+        if (std::holds_alternative<DQ_robotics_extensions::VFIConfigurationFile::ENVIRONMENT_TO_ROBOT_RAW_DATA>(raw_data[i])) {
+            std::cout << "ENVIRONMENT_TO_ROBOT" << std::endl;
+            std::cout << std::string(50, '-') << std::endl;
+
+            auto& env_data = std::get<DQ_robotics_extensions::VFIConfigurationFile::ENVIRONMENT_TO_ROBOT_RAW_DATA>(raw_data[i]);
+
+            std::cout << std::left << std::setw(35) << "  vfi_type:" << env_data.vfi_type << std::endl;
+            std::cout << std::setw(35) << "  cs_entity_environment:"
+                      << "[" << join_vector(env_data.cs_entity_environment) << "]" << std::endl;
+            std::cout << std::setw(35) << "  cs_entity_robot:"
+                      << "[" << join_vector(env_data.cs_entity_robot) << "]" << std::endl;
+            std::cout << std::setw(35) << "  entity_environment_primitive_type:"
+                      << env_data.entity_environment_primitive_type << std::endl;
+            std::cout << std::setw(35) << "  entity_robot_primitive_type:"
+                      << env_data.entity_robot_primitive_type << std::endl;
+            std::cout << std::setw(35) << "  robot_index:" << env_data.robot_index << std::endl;
+            std::cout << std::setw(35) << "  joint_index:" << env_data.joint_index << std::endl;
+            std::cout << std::setw(35) << "  safe_distance:" << env_data.safe_distance << std::endl;
+            std::cout << std::setw(35) << "  vfi_gain:" << env_data.vfi_gain << std::endl;
+            std::cout << std::setw(35) << "  direction:" << env_data.direction << std::endl;
+            std::cout << std::setw(35) << "  tag:" << env_data.tag << std::endl;
+
+        } else {
+            std::cout << "ROBOT_TO_ROBOT" << std::endl;
+            std::cout << std::string(50, '-') << std::endl;
+
+            auto& robot_data = std::get<DQ_robotics_extensions::VFIConfigurationFile::ROBOT_TO_ROBOT_RAW_DATA>(raw_data[i]);
+
+            std::cout << std::left << std::setw(35) << "  vfi_type:" << robot_data.vfi_type << std::endl;
+            std::cout << std::setw(35) << "  cs_entity_one:"
+                      << "[" << join_vector(robot_data.cs_entity_one) << "]" << std::endl;
+            std::cout << std::setw(35) << "  cs_entity_two:"
+                      << "[" << join_vector(robot_data.cs_entity_two) << "]" << std::endl;
+            std::cout << std::setw(35) << "  entity_one_primitive_type:"
+                      << robot_data.entity_one_primitive_type << std::endl;
+            std::cout << std::setw(35) << "  entity_two_primitive_type:"
+                      << robot_data.entity_two_primitive_type << std::endl;
+            std::cout << std::setw(35) << "  robot_index_one:" << robot_data.robot_index_one << std::endl;
+            std::cout << std::setw(35) << "  robot_index_two:" << robot_data.robot_index_two << std::endl;
+            std::cout << std::setw(35) << "  joint_index_one:" << robot_data.joint_index_one << std::endl;
+            std::cout << std::setw(35) << "  joint_index_two:" << robot_data.joint_index_two << std::endl;
+            std::cout << std::setw(35) << "  safe_distance:" << robot_data.safe_distance << std::endl;
+            std::cout << std::setw(35) << "  vfi_gain:" << robot_data.vfi_gain << std::endl;
+            std::cout << std::setw(35) << "  direction:" << robot_data.direction << std::endl;
+            std::cout << std::setw(35) << "  tag:" << robot_data.tag << std::endl;
+        }
+    }
+    std::cout << "\n==========================================" << std::endl;
+    std::cout << "END OF LOG" << std::endl;
+    std::cout << "==========================================" << std::endl;
+}
+
+
 
 class VFIConfigurationFileYaml::Impl
 {
@@ -36,20 +147,12 @@ public:
     std::string config_file_;
     int vfi_file_version_ = 2; // default value
     bool zero_indexed_ = true; // default value
+    std::vector<RawData> raw_data_;
     Impl()
     {
 
     };
 
-    /**
-     * @brief bool2string convert a boolean to string
-     * @param flag The boolean to convert
-     * @return "true" or "false" according to the flag.
-     */
-    std::string bool2string(const bool& flag)
-    {
-        return flag == true ? std::string("true") : std::string("false");
-    }
 
 
     /**
@@ -70,89 +173,91 @@ public:
     }
 
     /**
-     * @brief join_vector create a string from a string vector.
-     * @param vec The string vector
-     * @param delimiter A string to separate the elements of the vector
-     * @return The desired string
+     * @brief VFIConfigurationFileYaml::_extract_yaml_data reads the YAML file and store the data on a RAW_DATA vector.
      */
-    std::string join_vector(const std::vector<std::string>& vec, const std::string& delimiter = ", ") {
-        std::string result;
-        for (size_t i = 0; i < vec.size(); ++i) {
-            result += vec[i];
-            if (i < vec.size() - 1) {
-                result += delimiter;
+    void _extract_yaml_data()
+    {
+        try {
+            config_ = YAML::LoadFile(config_file_);
+
+            if (config_["vfi_file_version"])
+                vfi_file_version_ = config_["vfi_file_version"].as<int>();
+            else
+                std::cerr << "Warning: vfi_file_version not found, using default: "
+                          << vfi_file_version_ << std::endl;
+
+
+            if (config_["zero_indexed"])
+                zero_indexed_ = config_["zero_indexed"].as<bool>();
+            else
+                std::cerr << "Warning: zero_indexed not found, using default: " + bool2string(zero_indexed_)<< std::endl;
+
+
+
+            const YAML::Node& vfi_array = config_["vfi_array"]; //Aliasing
+
+
+
+            for (const auto& parameter : vfi_array) {
+                try {
+                    std::string vfi_type = parameter["vfi_type"].as<std::string>();
+
+                    if (vfi_type == "ENVIRONMENT_TO_ROBOT") {
+                        ENVIRONMENT_TO_ROBOT_RAW_DATA env_data;
+                        env_data.vfi_type = vfi_type;
+                        env_data.cs_entity_environment  = get_vector_list(parameter["cs_entity_environment"],
+                                                                                "cs_entity_environment");
+                        env_data.cs_entity_robot  = get_vector_list(parameter["cs_entity_robot"],
+                                                                          "cs_entity_robot");
+                        env_data.entity_environment_primitive_type = parameter["entity_environment_primitive_type"].as<std::string>();
+                        env_data.entity_robot_primitive_type = parameter["entity_robot_primitive_type"].as<std::string>();
+                        env_data.robot_index = parameter["robot_index"].as<int>();
+                        env_data.joint_index = parameter["joint_index"].as<int>();
+                        env_data.safe_distance = parameter["safe_distance"].as<double>();
+                        env_data.vfi_gain = parameter["vfi_gain"].as<double>();
+                        env_data.direction = parameter["direction"].as<std::string>();
+                        env_data.tag = parameter["tag"].as<std::string>();
+                        raw_data_.push_back(env_data);
+
+                    }else if (vfi_type == "ROBOT_TO_ROBOT") {
+                        ROBOT_TO_ROBOT_RAW_DATA robot_data;
+                        robot_data.vfi_type = vfi_type;
+                        robot_data.cs_entity_one  = get_vector_list(parameter["cs_entity_one"],
+                                                                          "cs_entity_one");
+                        robot_data.cs_entity_two = get_vector_list(parameter["cs_entity_two"],
+                                                                          "cs_entity_robot");
+                        robot_data.entity_one_primitive_type = parameter["entity_one_primitive_type"].as<std::string>();
+                        robot_data.entity_two_primitive_type = parameter["entity_two_primitive_type"].as<std::string>();
+                        robot_data.robot_index_one = parameter["robot_index_one"].as<int>();
+                        robot_data.robot_index_two = parameter["robot_index_two"].as<int>();
+                        robot_data.joint_index_one = parameter["joint_index_one"].as<int>();
+                        robot_data.joint_index_two = parameter["joint_index_two"].as<int>();
+                        robot_data.safe_distance = parameter["safe_distance"].as<double>();
+                        robot_data.vfi_gain = parameter["vfi_gain"].as<double>();
+                        robot_data.direction = parameter["direction"].as<std::string>();
+                        robot_data.tag = parameter["tag"].as<std::string>();
+                        raw_data_.push_back(robot_data);
+
+                    }else {
+                        throw std::runtime_error("Unknown VFI type: " + vfi_type);
+                    }
+                }
+                catch (const YAML::Exception& e) {
+                    std::cerr << "Error parsing VFI item: " << e.what() << std::endl;
+                }
             }
         }
-        return result;
-    }
-
-    /**
-     * @brief log_complete_raw_data displays on the terminal the raw data vector.
-     * @param raw_data The raw data vector obtained from the YAML file.
-     */
-    void log_complete_raw_data(const std::vector<DQ_robotics_extensions::VFIConfigurationFile::RawData>& raw_data) {
-        std::cout << "╔══════════════════════════════════════════════════════╗" << std::endl;
-        std::cout << "║       VFI Configuration File Parser - C++17         ║" << std::endl;
-        std::cout << "╚══════════════════════════════════════════════════════╝" << std::endl;
-        std::cout << "\n==========================================" << std::endl;
-        std::cout << "VFI_FILE_VERSION: " << vfi_file_version_ << std::endl;
-        std::cout << "Zero Indexed: " + bool2string(zero_indexed_) << std::endl;
-        std::cout << "RAW DATA LOG (" << raw_data.size() << " items)" << std::endl;
-        std::cout << "==========================================" << std::endl;
-
-        for (size_t i = 0; i < raw_data.size(); ++i) {
-            std::cout << "\n\n[" << i + 1 << "/" << raw_data.size() << "] ";
-
-            if (std::holds_alternative<DQ_robotics_extensions::VFIConfigurationFile::ENVIRONMENT_TO_ROBOT_RAW_DATA>(raw_data[i])) {
-                std::cout << "ENVIRONMENT_TO_ROBOT" << std::endl;
-                std::cout << std::string(50, '-') << std::endl;
-
-                auto& env_data = std::get<DQ_robotics_extensions::VFIConfigurationFile::ENVIRONMENT_TO_ROBOT_RAW_DATA>(raw_data[i]);
-
-                std::cout << std::left << std::setw(35) << "  vfi_type:" << env_data.vfi_type << std::endl;
-                std::cout << std::setw(35) << "  cs_entity_environment:"
-                          << "[" << join_vector(env_data.cs_entity_environment) << "]" << std::endl;
-                std::cout << std::setw(35) << "  cs_entity_robot:"
-                          << "[" << join_vector(env_data.cs_entity_robot) << "]" << std::endl;
-                std::cout << std::setw(35) << "  entity_environment_primitive_type:"
-                          << env_data.entity_environment_primitive_type << std::endl;
-                std::cout << std::setw(35) << "  entity_robot_primitive_type:"
-                          << env_data.entity_robot_primitive_type << std::endl;
-                std::cout << std::setw(35) << "  robot_index:" << env_data.robot_index << std::endl;
-                std::cout << std::setw(35) << "  joint_index:" << env_data.joint_index << std::endl;
-                std::cout << std::setw(35) << "  safe_distance:" << env_data.safe_distance << std::endl;
-                std::cout << std::setw(35) << "  vfi_gain:" << env_data.vfi_gain << std::endl;
-                std::cout << std::setw(35) << "  direction:" << env_data.direction << std::endl;
-                std::cout << std::setw(35) << "  tag:" << env_data.tag << std::endl;
-
-            } else {
-                std::cout << "ROBOT_TO_ROBOT" << std::endl;
-                std::cout << std::string(50, '-') << std::endl;
-
-                auto& robot_data = std::get<DQ_robotics_extensions::VFIConfigurationFile::ROBOT_TO_ROBOT_RAW_DATA>(raw_data[i]);
-
-                std::cout << std::left << std::setw(35) << "  vfi_type:" << robot_data.vfi_type << std::endl;
-                std::cout << std::setw(35) << "  cs_entity_one:"
-                          << "[" << join_vector(robot_data.cs_entity_one) << "]" << std::endl;
-                std::cout << std::setw(35) << "  cs_entity_two:"
-                          << "[" << join_vector(robot_data.cs_entity_two) << "]" << std::endl;
-                std::cout << std::setw(35) << "  entity_one_primitive_type:"
-                          << robot_data.entity_one_primitive_type << std::endl;
-                std::cout << std::setw(35) << "  entity_two_primitive_type:"
-                          << robot_data.entity_two_primitive_type << std::endl;
-                std::cout << std::setw(35) << "  robot_index_one:" << robot_data.robot_index_one << std::endl;
-                std::cout << std::setw(35) << "  robot_index_two:" << robot_data.robot_index_two << std::endl;
-                std::cout << std::setw(35) << "  joint_index_one:" << robot_data.joint_index_one << std::endl;
-                std::cout << std::setw(35) << "  joint_index_two:" << robot_data.joint_index_two << std::endl;
-                std::cout << std::setw(35) << "  safe_distance:" << robot_data.safe_distance << std::endl;
-                std::cout << std::setw(35) << "  vfi_gain:" << robot_data.vfi_gain << std::endl;
-                std::cout << std::setw(35) << "  direction:" << robot_data.direction << std::endl;
-                std::cout << std::setw(35) << "  tag:" << robot_data.tag << std::endl;
-            }
+        catch(const YAML::BadFile& e)
+        {
+            std::cerr << e.msg << std::endl;
+            throw std::runtime_error(e.msg);
         }
-        std::cout << "\n==========================================" << std::endl;
-        std::cout << "END OF LOG" << std::endl;
-        std::cout << "==========================================" << std::endl;
+        catch(const YAML::ParserException& e)
+        {
+            std::cerr << e.msg << std::endl;
+            throw std::runtime_error(e.msg);
+        }
+
     }
 
 };
@@ -166,96 +271,10 @@ VFIConfigurationFileYaml::VFIConfigurationFileYaml(const std::string& config_fil
 {
     impl_ = std::make_shared<VFIConfigurationFileYaml::Impl>();
     impl_->config_file_ = config_file;
-    _extract_yaml_data();
+    impl_->_extract_yaml_data();
 }
 
-/**
- * @brief VFIConfigurationFileYaml::_extract_yaml_data reads the YAML file and store the data on a RAW_DATA vector.
- */
-void VFIConfigurationFileYaml::_extract_yaml_data()
-{
-    try {
-        impl_->config_ = YAML::LoadFile(impl_->config_file_);
 
-        if (impl_->config_["vfi_file_version"])
-            impl_->vfi_file_version_ = impl_->config_["vfi_file_version"].as<int>();
-        else
-            std::cerr << "Warning: vfi_file_version not found, using default: "
-                      << impl_->vfi_file_version_ << std::endl;
-
-
-        if (impl_->config_["zero_indexed"])
-            impl_->zero_indexed_ = impl_->config_["zero_indexed"].as<bool>();
-        else
-            std::cerr << "Warning: zero_indexed not found, using default: " + impl_->bool2string(impl_->zero_indexed_)<< std::endl;
-
-
-
-        const YAML::Node& vfi_array = impl_->config_["vfi_array"]; //Aliasing
-
-
-
-        for (const auto& parameter : vfi_array) {
-            try {
-                std::string vfi_type = parameter["vfi_type"].as<std::string>();
-
-                if (vfi_type == "ENVIRONMENT_TO_ROBOT") {
-                    ENVIRONMENT_TO_ROBOT_RAW_DATA env_data;
-                    env_data.vfi_type = vfi_type;
-                    env_data.cs_entity_environment  = impl_->get_vector_list(parameter["cs_entity_environment"],
-                                                                                       "cs_entity_environment");
-                    env_data.cs_entity_robot  = impl_->get_vector_list(parameter["cs_entity_robot"],
-                                                                                 "cs_entity_robot");
-                    env_data.entity_environment_primitive_type = parameter["entity_environment_primitive_type"].as<std::string>();
-                    env_data.entity_robot_primitive_type = parameter["entity_robot_primitive_type"].as<std::string>();
-                    env_data.robot_index = parameter["robot_index"].as<int>();
-                    env_data.joint_index = parameter["joint_index"].as<int>();
-                    env_data.safe_distance = parameter["safe_distance"].as<double>();
-                    env_data.vfi_gain = parameter["vfi_gain"].as<double>();
-                    env_data.direction = parameter["direction"].as<std::string>();
-                    env_data.tag = parameter["tag"].as<std::string>();
-                    raw_data_.push_back(env_data);
-
-                }else if (vfi_type == "ROBOT_TO_ROBOT") {
-                    ROBOT_TO_ROBOT_RAW_DATA robot_data;
-                    robot_data.vfi_type = vfi_type;
-                    robot_data.cs_entity_one  = impl_->get_vector_list(parameter["cs_entity_one"],
-                                                                                 "cs_entity_one");
-                    robot_data.cs_entity_two = impl_->get_vector_list(parameter["cs_entity_two"],
-                                                                                "cs_entity_robot");
-                    robot_data.entity_one_primitive_type = parameter["entity_one_primitive_type"].as<std::string>();
-                    robot_data.entity_two_primitive_type = parameter["entity_two_primitive_type"].as<std::string>();
-                    robot_data.robot_index_one = parameter["robot_index_one"].as<int>();
-                    robot_data.robot_index_two = parameter["robot_index_two"].as<int>();
-                    robot_data.joint_index_one = parameter["joint_index_one"].as<int>();
-                    robot_data.joint_index_two = parameter["joint_index_two"].as<int>();
-                    robot_data.safe_distance = parameter["safe_distance"].as<double>();
-                    robot_data.vfi_gain = parameter["vfi_gain"].as<double>();
-                    robot_data.direction = parameter["direction"].as<std::string>();
-                    robot_data.tag = parameter["tag"].as<std::string>();
-                    raw_data_.push_back(robot_data);
-
-                }else {
-                    throw std::runtime_error("Unknown VFI type: " + vfi_type);
-                }
-            }
-            catch (const YAML::Exception& e) {
-            std::cerr << "Error parsing VFI item: " << e.what() << std::endl;
-            }
-        }
-    }
-    catch(const YAML::BadFile& e)
-    {
-        std::cerr << e.msg << std::endl;
-        throw std::runtime_error(e.msg);
-    }
-    catch(const YAML::ParserException& e)
-    {
-        std::cerr << e.msg << std::endl;
-        throw std::runtime_error(e.msg);
-    }
-
-}
 
 
 /**
@@ -264,16 +283,18 @@ void VFIConfigurationFileYaml::_extract_yaml_data()
  */
 std::vector<VFIConfigurationFile::RawData> VFIConfigurationFileYaml::get_raw_data()
 {
-    return raw_data_;
+    return impl_->raw_data_;
 }
 
 /**
  * @brief VFIConfigurationFileYaml::show_raw_data displays on the terminal the raw data vector.
  * @param raw_data The raw data vector obtained from the YAML file.
+ * @param vfi_file_version
+ * @param zero_indexed
  */
-void VFIConfigurationFileYaml::show_raw_data(const std::vector<RawData>& raw_data)
+void VFIConfigurationFileYaml::show_raw_data(const std::vector<RawData>& raw_data, const int &vfi_file_version, const bool &zero_indexed)
 {
-    impl_->log_complete_raw_data(raw_data);
+    log_complete_raw_data(raw_data, vfi_file_version, zero_indexed);
 }
 
 /**

@@ -33,11 +33,9 @@ class VFIConfigurationFileYaml: public VFIConfigurationFile
 private:
     class Impl;
     std::shared_ptr<Impl> impl_;
-    std::vector<RawData> raw_data_;
-    void _extract_yaml_data();
 public:
     ~VFIConfigurationFileYaml() = default;
-    VFIConfigurationFileYaml(const std::string& config_file);
+    explicit VFIConfigurationFileYaml(const std::string& config_file);
 
     // Override from VFIConfigurationFile
     std::vector<RawData> get_raw_data() override;
@@ -46,7 +44,9 @@ public:
 
 
     // Exclusive methods
-    void show_raw_data(const std::vector<RawData>& raw_data);
+    static void show_raw_data(const std::vector<RawData>& raw_data,
+                              const int& vfi_file_version,
+                              const bool& zero_indexed);
 
     //void create_yaml_file(const std::vector<RawData>& raw_data,
     //                      const std::string& config_file_name);
