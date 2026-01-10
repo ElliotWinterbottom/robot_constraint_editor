@@ -22,10 +22,8 @@
 */
 
 #include <dqrobotics_extensions/robot_constraint_editor/robot_constraint_editor.hpp>
-#include <dqrobotics_extensions/robot_constraint_editor/vfi_configuration_file_yaml.hpp>
 #include <filesystem>
 #include <iostream>
-#include <yaml-cpp/yaml.h>
 #include <map>
 #include <fstream>
 
@@ -46,10 +44,8 @@ template void RobotConstraintEditor::edit_data<std::vector<std::string>>(const s
 class RobotConstraintEditor::Impl
 {
 public:
-    YAML::Node config_;
     const int vfi_file_version_ = 2; // default value
     bool zero_indexed_ = true; // default value
-    std::shared_ptr<VFIConfigurationFileYaml> vfi_config_file_yaml_;
 
     std::map<std::string, VFIConfigurationFile::RawData> yaml_raw_data_map_;
 
@@ -62,19 +58,6 @@ public:
     bool _is_the_same_type(const VFIConfigurationFile::RawData& data1, const VFIConfigurationFile::RawData& data2)
     {
         return data1.index() == data2.index();
-    }
-
-
-    /**
-     * @brief _load_data_from_yaml_file load data from a YAML file.
-     * @param config_file The path to the YAML file, including its name and extension
-     * @return The raw data vector.
-     */
-    std::vector<VFIConfigurationFile::RawData> _load_data_from_yaml_file(const std::string& config_file)
-    {
-        if (!vfi_config_file_yaml_)
-            vfi_config_file_yaml_ = std::make_shared<VFIConfigurationFileYaml>(config_file);
-        return vfi_config_file_yaml_->get_raw_data();
     }
 
     /**
@@ -113,17 +96,13 @@ RobotConstraintEditor::RobotConstraintEditor() {
 
 
 /**
- * @brief RobotConstraintEditor::load_data
- * @param config_file The path to the YAML file, including its name and extension.
+ * @brief RobotConstraintEditor::add_data adds data to compose the YAML file.
+ * @param vector_data A vector containing VFIConfigurationFile::RawData elements
  */
-void  RobotConstraintEditor::load_data(const std::string& config_file)
+void  RobotConstraintEditor::add_data(const std::vector<VFIConfigurationFile::RawData>& vector_data)
 {
-    std::vector<VFIConfigurationFile::RawData> raw_data = impl_->_load_data_from_yaml_file(config_file);
-    impl_->yaml_raw_data_map_.clear();
-    for (const auto& data : raw_data) {
-        std::string tag = impl_->_extract_tag(data);
-        impl_->yaml_raw_data_map_.try_emplace(tag, data);
-    }
+    for (auto& data : vector_data)
+        add_data(data);
 }
 
 /**
@@ -134,18 +113,13 @@ void  RobotConstraintEditor::load_data(const std::string& config_file)
  */
 void RobotConstraintEditor::replace_data(const std::string& tag, const VFIConfigurationFile::RawData& data)
 {
-    if (impl_->vfi_config_file_yaml_)
-    {
-        try{
-            remove_data(tag);
-            add_data(data);
-        } catch (const std::runtime_error& e) {
-            std::cerr<<e.what()<<std::endl;
-            throw std::runtime_error("RobotConstraintEditor::edit_data: Fail to update the VFI data!");
-        }
-
-    }else
-        throw std::runtime_error("There is no any data to replace!");
+    try{
+        remove_data(tag);
+        add_data(data);
+    } catch (const std::runtime_error& e) {
+        std::cerr<<e.what()<<std::endl;
+        throw std::runtime_error("RobotConstraintEditor::edit_data: Fail to update the VFI data!");
+    }
 }
 
 /**
