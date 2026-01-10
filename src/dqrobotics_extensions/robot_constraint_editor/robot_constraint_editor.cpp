@@ -120,21 +120,6 @@ void RobotConstraintEditor::replace_data(const std::string& tag, const VFIConfig
         std::cerr<<e.what()<<std::endl;
         throw std::runtime_error("RobotConstraintEditor::edit_data: Fail to update the VFI data!");
     }
-
-    /*
-    if (impl_->vfi_config_file_yaml_)
-    {
-        try{
-            remove_data(tag);
-            add_data(data);
-        } catch (const std::runtime_error& e) {
-            std::cerr<<e.what()<<std::endl;
-            throw std::runtime_error("RobotConstraintEditor::edit_data: Fail to update the VFI data!");
-        }
-
-    }else
-        throw std::runtime_error("There is no any data to replace!");
-    */
 }
 
 /**
