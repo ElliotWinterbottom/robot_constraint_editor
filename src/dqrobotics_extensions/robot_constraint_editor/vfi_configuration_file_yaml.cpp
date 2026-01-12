@@ -115,7 +115,7 @@ public:
                         robot_data.cs_entity_one  = get_vector_list(parameter["cs_entity_one"],
                                                                           "cs_entity_one");
                         robot_data.cs_entity_two = get_vector_list(parameter["cs_entity_two"],
-                                                                          "cs_entity_robot");
+                                                                          "cs_entity_two");
                         robot_data.entity_one_primitive_type = parameter["entity_one_primitive_type"].as<std::string>();
                         robot_data.entity_two_primitive_type = parameter["entity_two_primitive_type"].as<std::string>();
                         robot_data.robot_index_one = parameter["robot_index_one"].as<int>();
