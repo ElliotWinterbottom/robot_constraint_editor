@@ -41,6 +41,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_open_file_action_triggered();
+
 private:
     Ui::MainWindow *ui;
     void timerEvent(QTimerEvent *event);

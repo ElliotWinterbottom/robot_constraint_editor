@@ -26,6 +26,7 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "openconstraintfiledialog.h"
 
 /**
  * @brief MainWindow::MainWindow ctor of the class
@@ -63,5 +64,12 @@ void MainWindow::timerEvent(QTimerEvent *event)
     counter_++;
     if (counter_>100)
         counter_=0;
+}
+
+
+void MainWindow::on_open_file_action_triggered()
+{
+     auto *open_file_dialogue = new OpenConstraintFileDialog();
+    open_file_dialogue->show();
 }
 
