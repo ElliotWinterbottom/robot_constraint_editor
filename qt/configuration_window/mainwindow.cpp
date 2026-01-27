@@ -39,17 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     timerId_ = startTimer(1000); // Start timer for 1000ms
-
-
 }
-
-/**
- * @brief MainWindow::_connect_signal_to_slots connects the signals to their
- *                  corresponding slots. This method must be called in the ctor
- *                  of the class.
- *                  https://doc.qt.io/qt-6/signalsandslots.html
- */
-
 
 /**
  * @brief MainWindow::~MainWindow destructor of the class
