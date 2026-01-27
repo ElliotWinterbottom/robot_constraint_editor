@@ -41,8 +41,11 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+
 private slots:
-    void _helloWorld_pushButton_pressed();
+
+private slots:
+
 
 private:
     Ui::MainWindow *ui;

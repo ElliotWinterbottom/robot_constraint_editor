@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     timerId_ = startTimer(1000); // Start timer for 1000ms
+<<<<<<< HEAD
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum(100);
     ui->progressBar->setValue(0);
@@ -57,6 +58,13 @@ void MainWindow::_connect_signal_to_slots()
             &::MainWindow::_helloWorld_pushButton_pressed);
 
     //-- Add more connections here---//
+||||||| parent of 7497c6d ([mainwindow.cpp, mainwindow.h, mainwindow.cpp] removed example UI elements and their slots so that the UI can properly start development)
+    ui->progressBar->setMinimum(0);
+    ui->progressBar->setMaximum(100);
+    ui->progressBar->setValue(0);
+=======
+
+>>>>>>> 7497c6d ([mainwindow.cpp, mainwindow.h, mainwindow.cpp] removed example UI elements and their slots so that the UI can properly start development)
 }
 
 
@@ -70,6 +78,7 @@ MainWindow::~MainWindow()
 }
 
 
+<<<<<<< HEAD
 /**
  * @brief MainWindow::on_helloWorld_pushButton_pressed slot method for the "helloWorld_pushButton" object. When the push button is
  *        pressed the "exampleCheckBox" state changes to Qt::Checked.
@@ -79,6 +88,18 @@ void MainWindow::_helloWorld_pushButton_pressed()
     ui->exampleCheckBox->setCheckState(Qt::Checked);
     qDebug()<<"Button pressed!";
 }
+||||||| parent of 7497c6d ([mainwindow.cpp, mainwindow.h, mainwindow.cpp] removed example UI elements and their slots so that the UI can properly start development)
+/**
+ * @brief MainWindow::on_helloWorld_pushButton_pressed slot method for the "helloWorld_pushButton" object. When the push button is
+ *        pressed the "exampleCheckBox" state changes to Qt::Checked.
+ */
+void MainWindow::on_helloWorld_pushButton_pressed()
+{
+    ui->exampleCheckBox->setCheckState(Qt::Checked);
+    qDebug()<<"Button pressed!";
+}
+=======
+>>>>>>> 7497c6d ([mainwindow.cpp, mainwindow.h, mainwindow.cpp] removed example UI elements and their slots so that the UI can properly start development)
 
 /**
  * @brief MainWindow::timerEvent This method is called periodically at the interval defined in the class constructor.
@@ -90,8 +111,6 @@ void MainWindow::timerEvent(QTimerEvent *event)
     counter_++;
     if (counter_>100)
         counter_=0;
-
-    ui->progressBar->setValue(counter_);
 }
 
 
